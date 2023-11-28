@@ -18,6 +18,7 @@ from supervision.annotators.core import (
     HeatMapAnnotator,
     LabelAnnotator,
     MaskAnnotator,
+    PolygonAnnotator,
     TraceAnnotator,
 )
 from supervision.annotators.utils import ColorLookup
@@ -34,6 +35,7 @@ from supervision.detection.tools.inference_slicer import InferenceSlicer
 from supervision.detection.tools.polygon_zone import PolygonZone, PolygonZoneAnnotator
 from supervision.detection.utils import (
     box_iou_batch,
+    calculate_masks_centroids,
     filter_polygons_by_area,
     mask_to_polygons,
     mask_to_xyxy,
