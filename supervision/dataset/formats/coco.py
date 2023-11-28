@@ -104,6 +104,7 @@ def detections_to_coco_annotations(
     min_image_area_percentage: float = 0.0,
     max_image_area_percentage: float = 1.0,
     approximation_percentage: float = 0.75,
+    bbox: bool = True
 ) -> Tuple[List[Dict], int]:
     coco_annotations = []
     for xyxy, mask, _, class_id, _ in detections:
@@ -122,11 +123,12 @@ def detections_to_coco_annotations(
             "id": annotation_id,
             "image_id": image_id,
             "category_id": int(class_id),
-            "bbox": [xyxy[0], xyxy[1], box_width, box_height],
-            "area": box_width * box_height,
             "segmentation": [polygon] if polygon else [],
             "iscrowd": 0,
         }
+        if bbox:
+            coco_annotation['bbox'] = [xyxy[0], xyxy[1], box_width, box_height]
+            coco_annotation['bbox'] = box_width * box_height
         coco_annotations.append(coco_annotation)
         annotation_id += 1
     return coco_annotations, annotation_id
@@ -184,6 +186,7 @@ def save_coco_annotations(
     min_image_area_percentage: float = 0.0,
     max_image_area_percentage: float = 1.0,
     approximation_percentage: float = 0.75,
+    bbox : bool = True,
 ) -> None:
     Path(annotation_path).parent.mkdir(parents=True, exist_ok=True)
     info = {}
@@ -222,6 +225,7 @@ def save_coco_annotations(
             min_image_area_percentage=min_image_area_percentage,
             max_image_area_percentage=max_image_area_percentage,
             approximation_percentage=approximation_percentage,
+            bbox = bbox,
         )
 
         coco_annotations.extend(coco_annotation)
